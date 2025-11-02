@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Index of /myindex</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #f9f9f9;
+      color: #222;
+      padding: 20px;
+    }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .dir::before { content: "📁 "; }
+    .file::before { content: "📄 "; }
+  </style>
+</head>
+<body>
+  <h2>Index of /</h2>
+  <hr>
+  <div id="list">Loading...</div>
+  <hr>
+  <small>Generated with ❤️ by Nperma</small>
+
+  <script>
+    const owner = "nperma";     // Ganti dengan username GitHub kamu
+    const repo = "growp000";     // Ganti dengan nama repo kamu
+    const path = "";            // Biarkan kosong untuk root
+
+    const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const listDiv = document.getElementById("list");
+
+    fetch(api)
+      .then(res => res.json())
+      .then(files => {
+        listDiv.innerHTML = "";
+        if (Array.isArray(files)) {
+          for (const file of files) {
+            const a = document.createElement("a");
+            a.textContent = file.name;
+            a.href = file.html_url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+            a.target = "_blank";
+            a.className = file.type === "dir" ? "dir" : "file";
+            listDiv.appendChild(a);
+            listDiv.appendChild(document.createElement("br"));
+          }
+        } else {
+          listDiv.textContent = "Error loading files.";
+        }
+      })
+      .catch(() => listDiv.textContent = "Failed to fetch file list.");
+  </script>
+</body>
+</html>
